@@ -112,8 +112,8 @@ function currentDinoImage() {
 // ====================
 let obstacles = [];
 let distanceToNextObstacle = 0;
-let gameSpeed = 3.0;
-const BASE_SPEED = 3.0;
+let gameSpeed = 1.8;
+const BASE_SPEED = 1.8;
 const gravity = 0.85;
 const JUMP_VELOCITY = -19.5;
 
@@ -162,7 +162,7 @@ function startGame() {
     lives = 3;
     score = 0;
     obstacles = [];
-    distanceToNextObstacle = 200;
+    distanceToNextObstacle = 300;
     gameSpeed = BASE_SPEED;
     dino.velocityY = 0;
     dino.jumping = false;
@@ -387,7 +387,7 @@ function update() {
     if (score % 100 === 0) playScoreSound();
 
     const s = Math.floor(score / 10);
-    gameSpeed = BASE_SPEED + Math.min(s / 50, 4);
+    gameSpeed = BASE_SPEED + Math.min(s / 70, 3.2);
 }
 
 // ====================
@@ -483,10 +483,12 @@ function drawOverlay() {
     if (state === "gameover") {
         ctx.font = "bold 32px 'Courier New', monospace";
         ctx.fillText("GAME OVER", canvas.width / 2, 105);
-        ctx.font = "16px 'Courier New', monospace";
-        ctx.fillText("Score " + Math.floor(score / 10) + "   Best " + highScore, canvas.width / 2, 138);
+        ctx.font = "bold 22px 'Courier New', monospace";
+        ctx.fillText("Score " + Math.floor(score / 10), canvas.width / 2, 140);
+        ctx.font = "bold 18px 'Courier New', monospace";
+        ctx.fillText("Best " + highScore, canvas.width / 2, 165);
         ctx.font = "13px 'Courier New', monospace";
-        ctx.fillText("Press SPACE / tap to retry", canvas.width / 2, 165);
+        ctx.fillText("Press SPACE / tap to retry", canvas.width / 2, 190);
     }
 }
 
