@@ -114,8 +114,8 @@ let obstacles = [];
 let distanceToNextObstacle = 0;
 let gameSpeed = 3.0;
 const BASE_SPEED = 3.0;
-const gravity = 0.9;
-const JUMP_VELOCITY = -16.5;
+const gravity = 0.85;
+const JUMP_VELOCITY = -19.5;
 
 function spawnObstacle() {
     const roll = Math.random();
