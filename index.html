@@ -5,15 +5,26 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Lama Game</title>
+        <title>Dino Game</title>
+        <link rel="icon" type="image/png" href="assets/favicon.png">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
     </head>
 
 
     <body>
-        <h1>Lama Game</h1>
+        <h1>DINO GAME</h1>
         <canvas id="gameCanvas" width="800" height="300"></canvas>
-        <p class="hint">↑ / Space: jump &nbsp;•&nbsp; ↓: duck &nbsp;•&nbsp; P: pause &nbsp;•&nbsp; Tap screen on mobile</p>
+
+        <div class="controls">
+            <button id="btnDuck" class="ctrl-btn">&darr;<br>DUCK</button>
+            <button id="btnJump" class="ctrl-btn ctrl-btn-primary">&uarr;<br>JUMP</button>
+            <button id="btnFullscreen" class="ctrl-btn ctrl-btn-small" title="Fullscreen">&#x26F6;</button>
+        </div>
+
+        <p class="hint">&uarr; / SPACE jump &nbsp;&bull;&nbsp; &darr; duck &nbsp;&bull;&nbsp; P pause</p>
         <script src="game.js"></script>
     </body>
 
