@@ -257,6 +257,7 @@ if (btnFullscreen) {
 let audioCtx = null;
 function getAudioCtx() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume(); // unlock on first gesture
     return audioCtx;
 }
 function beep(freq, duration, type = "square", volume = 0.08) {
@@ -278,6 +279,16 @@ function playJumpSound() { beep(500, 0.12, "square", 0.06); }
 function playHitSound() { beep(120, 0.25, "sawtooth", 0.1); }
 function playScoreSound() { beep(880, 0.15, "sine", 0.05); }
 function playGameOverSound() { beep(200, 0.5, "sawtooth", 0.1); }
+
+// Extra safety net: some browsers only allow audio after ANY user gesture
+// on the page, not just a keypress. This unlocks it on the very first tap/click.
+function unlockAudioOnce() {
+    getAudioCtx();
+    document.removeEventListener("pointerdown", unlockAudioOnce);
+    document.removeEventListener("keydown", unlockAudioOnce);
+}
+document.addEventListener("pointerdown", unlockAudioOnce);
+document.addEventListener("keydown", unlockAudioOnce);
 
 // ====================
 // UPDATE
