@@ -60,7 +60,14 @@ function loadAssets(onDone) {
     });
 }
 
-// Draws an image at a target height, preserving its native aspect ratio.
+// Small helper: only draw an image if it has actually finished loading.
+// Calling ctx.drawImage on a not-yet-loaded (or failed) image throws and
+// would otherwise silently kill the whole game loop.
+function safeDrawImage(img, ...args) {
+    if (img && img.naturalWidth) {
+        ctx.drawImage(img, ...args);
+    }
+}
 // anchorBottom keeps the sprite's feet aligned to a fixed ground y.
 function drawSpriteImg(img, x, targetHeight, anchorBottomY) {
     if (!img || !img.naturalWidth) return { width: 0, height: 0 };
@@ -378,7 +385,7 @@ function drawBackground() {
     // Clouds (parallax)
     for (const dx of [80, 340, 600, 860]) {
         const x = ((dx + cloudScroll) % (canvas.width + 300)) - 150;
-        ctx.drawImage(images.cloud, x, 30 + (dx % 3) * 15, 90, 38);
+        safeDrawImage(images.cloud, x, 30 + (dx % 3) * 15, 90, 38);
     }
 
     // Ground strip
@@ -416,7 +423,7 @@ function drawObstacles() {
 
 function drawHUD() {
     for (let i = 0; i < lives; i++) {
-        ctx.drawImage(images.heart, 16 + i * 34, 14, 28, 24);
+        safeDrawImage(images.heart, 16 + i * 34, 14, 28, 24);
     }
 
     ctx.fillStyle = PALETTE.ink;
@@ -474,8 +481,14 @@ function draw() {
 // GAME LOOP
 // ====================
 function gameLoop() {
-    update();
-    draw();
+    try {
+        update();
+        draw();
+    } catch (err) {
+        // Never let a single bad frame permanently freeze the game -
+        // log it for debugging but keep the loop alive.
+        console.error("Game loop error:", err);
+    }
     requestAnimationFrame(gameLoop);
 }
 
