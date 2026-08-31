@@ -325,10 +325,20 @@ function update() {
     distanceToNextObstacle -= gameSpeed;
     if (distanceToNextObstacle <= 0) spawnObstacle();
 
-    const dinoBottom = GROUND_Y + dino.yOffset;
-    const dinoTop = dinoBottom - dino.height;
-    const dinoLeft = dino.x;
-    const dinoRight = dino.x + dino.width;
+    // Shrink the dino's hitbox inward from its visual sprite bounds - the
+    // PNG frames include transparent padding (tail, ears, spike) that
+    // shouldn't count as solid, or hits feel unfair even on a clean jump.
+    const dinoBottomRaw = GROUND_Y + dino.yOffset;
+    const dinoTopRaw = dinoBottomRaw - dino.height;
+    const dinoLeftRaw = dino.x;
+    const dinoRightRaw = dino.x + dino.width;
+
+    const dw = dinoRightRaw - dinoLeftRaw;
+    const dh = dinoBottomRaw - dinoTopRaw;
+    const dinoLeft = dinoLeftRaw + dw * 0.28;
+    const dinoRight = dinoRightRaw - dw * 0.15;
+    const dinoTop = dinoTopRaw + dh * 0.22;
+    const dinoBottom = dinoBottomRaw - dh * 0.04;
 
     for (let i = obstacles.length - 1; i >= 0; i--) {
         const o = obstacles[i];
@@ -351,10 +361,10 @@ function update() {
 
         if (dino.invulnerable === 0) {
             const hit =
-                dinoLeft < o.x + o.width * 0.8 &&
-                dinoRight > o.x + o.width * 0.2 &&
-                dinoTop < oBottom - o.height * 0.15 &&
-                dinoBottom > oTop + o.height * 0.15;
+                dinoLeft < o.x + o.width * 0.75 &&
+                dinoRight > o.x + o.width * 0.25 &&
+                dinoTop < oBottom - o.height * 0.1 &&
+                dinoBottom > oTop + o.height * 0.2;
 
             if (hit) {
                 lives--;
