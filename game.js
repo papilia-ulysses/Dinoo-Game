@@ -165,6 +165,7 @@ function startGame() {
     distanceToNextObstacle = 300;
     gameSpeed = BASE_SPEED;
     dino.velocityY = 0;
+    dino.yOffset = 0;
     dino.jumping = false;
     dino.ducking = false;
     dino.invulnerable = 0;
